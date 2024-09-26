@@ -64,26 +64,13 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Seleccionar archivo CSV</h1>
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".csv" required>
-            <input type="text" name="cadena" placeholder="Ingrese una palabra por la que filtrar">
-            <button type="submit" name="accion" value="buscar_mensajes">Buscar Mensajes</button>
-            <button type="submit" name="accion" value="ver_coordenadas">Ver Coordenadas</button>
-            <button type="submit" name="accion" value="ver_palabras">Ver Palabras Más Usadas</button>
-        </form>
-        
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        {% endwith %}
-    </div>
-    <p class="footer">Aplicación desarrollada por DRAKO</p>
-</body>
+    <h1>Bienvenido a tu aplicación</h1>
+    {% if message %}
+        <div class="alert">{{ message }}</div>
+    {% endif %}
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Enviar</button>
+    </form>
+
 </html>

@@ -68,9 +68,8 @@ def contar_palabras(datos):
 
 
 @app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
-    """Página principal que permite cargar un archivo CSV y buscar mensajes."""
-    return templates.TemplateResponse("index.html", {"request": request})
+async def index(request: Request, message: str = None):
+    return templates.TemplateResponse("index.html", {"request": request, "message": message})
 
 
 @app.post("/")

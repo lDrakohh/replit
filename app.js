@@ -12,17 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const PALABRAS_IGNORADAS = new Set([
-    'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'y', 'o', 'pero',
-    'a', 'ante', 'bajo', 'con', 'contra', 'de', 'desde', 'en', 'entre',
-    'hacia', 'hasta', 'para', 'por', 'sin', 'sobre', 'tras', 'que', 'quien',
-    'quienes', 'cual', 'cuales', 'me', 'te', 'se', 'nos', 'lo', 'le', 'les',
-    'mi', 'tu', 'su', 'nuestro', 'nuestra', 'nuestros', 'nuestras', 'vosotros',
-    'vosotras', 'ellos', 'ellas', 'yo', 'tú', 'él', 'ella', 'nosotros',
-    'nosotras', 'vosotros', 'vosotras', 'ellos', 'ellas', 'esto', 'eso',
-    'aquello', 'este', 'ese', 'aquel', 'estos', 'esos', 'aquellos', 'estas',
-    'esas', 'aquellas', 'no', 'si', 'es', 'ya', 'va', 'hay'
-]);
+const PALABRAS_IGNORADAS = new Set([/* ... */]);
 
 function leerCSV(file) {
     return new Promise((resolve, reject) => {
@@ -54,18 +44,31 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', upload.single('file'), async (req, res) => {
-    const datos = await leerCSV(req.file.buffer);
+    if (!req.file) {
+        return res.status(400).send("No se ha enviado ningún archivo.");
+    }
 
-    if (req.body.accion === "buscar_mensajes") {
-        const mensajes = buscarMensajes(datos, req.body.cadena);
-        res.render('results', { mensajes, cadena: req.body.cadena });
+    try {
+        const datos = await leerCSV(req.file.buffer);
 
-    } else if (req.body.accion === "ver_palabras") {
-        const palabras = contarPalabras(datos);
-        res.render('words', { palabras });
+        if (req.body.accion === "buscar_mensajes") {
+            const mensajes = buscarMensajes(datos, req.body.cadena);
+            res.render('results', { mensajes, cadena: req.body.cadena });
 
-    } else if (req.body.accion === "ver_coordenadas") {
-        // Implementa la lógica de coordenadas si es necesario
+        } else if (req.body.accion === "ver_palabras") {
+            const palabras = contarPalabras(datos);
+            res.render('words', { palabras });
+
+        } else if (req.body.accion === "ver_coordenadas") {
+            // Implementa la lógica de coordenadas si es necesario
+            res.send("Coordenadas: aún no implementado.");
+        } else {
+            return res.status(400).send("Acción no válida.");
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error procesando el archivo.");
     }
 });
 

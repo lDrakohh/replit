@@ -47,13 +47,13 @@
         button:hover {
             background-color: #0056b3;
         }
-        .messages {
+        .alert {
             margin-top: 20px;
             background-color: #ffdddd;
             border: 1px solid #f5c2c7;
             border-radius: 5px;
             padding: 10px;
-            list-style-type: none;
+            color: #d8000c;
         }
         .footer {
             text-align: center;
@@ -61,29 +61,41 @@
             font-size: 14px;
             color: #666;
         }
+        .actions {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Seleccionar archivo CSV</h1>
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".csv" required>
-            <input type="text" name="cadena" placeholder="Ingrese una palabra">
-            <button type="submit" name="accion" value="buscar_mensajes">Buscar Mensajes</button>
-            <button type="submit" name="accion" value="ver_coordenadas">Ver Coordenadas</button>
-            <button type="submit" name="accion" value="ver_palabras">Ver Palabras Más Usadas</button>
-        </form>
-        
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
+        <h1>Bienvenido al analizador de SMS</h1>
+        {% if message %}
+            <div class="alert">{{ message }}</div>
         {% endif %}
-        {% endwith %}
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Enviar</button>
+        </form>
+
+        <div class="actions">
+            <h2>Acciones</h2>
+            <form action="/" method="post">
+                <input type="text" name="cadena" placeholder="Buscar palabra..." required>
+                <input type="hidden" name="accion" value="buscar_mensajes">
+                <button type="submit">Buscar Mensajes</button>
+            </form>
+
+            <form action="/" method="post">
+                <input type="hidden" name="accion" value="ver_palabras">
+                <button type="submit">Ver Palabras Más Usadas</button>
+            </form>
+
+            <form action="/" method="post">
+                <input type="hidden" name="accion" value="ver_coordenadas">
+                <button type="submit">Ver Ubicaciones Enviadas</button>
+            </form>
+        </div>
     </div>
-    <p class="footer">Aplicación desarrollada por DRAKO</p>
+    <p class="footer">Herramienta desarrollada por Drako</p>
 </body>
 </html>

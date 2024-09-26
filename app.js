@@ -71,14 +71,16 @@ function contarPalabras(datos) {
 
     const palabrasMasUsadas = {};
     for (const telefono in conteoPalabras) {
-        const palabras = Object.entries(conteoPalabras[telefono])
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 10);
-        palabrasMasUsadas[telefono] = palabras;
+        // Convertir el objeto en un array de entradas y ordenarlas
+        const palabrasArray = Object.entries(conteoPalabras[telefono])
+            .sort((a, b) => b[1] - a[1]) // Ordenar de mayor a menor
+            .slice(0, 10); // Obtener las 10 más usadas
+        palabrasMasUsadas[telefono] = palabrasArray; // Almacenar en la estructura final
     }
 
-    return palabrasMasUsadas;
+    return palabrasMasUsadas; // Retornar la estructura final
 }
+
 
 function obtenerCoordenadas(datos) {
     const coordenadas = [];
@@ -129,8 +131,10 @@ app.post('/buscar_mensajes', (req, res) => {
 
 app.post('/ver_palabras', (req, res) => {
     const palabras = contarPalabras(datosCSV);
+    console.log(palabras);
     res.render('words', { palabras });
 });
+
 
 app.post('/ver_coordenadas', (req, res) => {
     const coordenadas = obtenerCoordenadas(datosCSV);

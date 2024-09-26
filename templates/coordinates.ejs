@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados de Búsqueda</title>
+    <title>Coordenadas Encontradas</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -37,10 +37,26 @@
             border-radius: 5px;
             padding: 15px;
             margin: 10px 0;
+            position: relative;
             transition: background 0.3s;
         }
         li:hover {
             background: #cce5ff;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: absolute;
+            right: 15px;
+            top: 15px;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
         .back-link {
             display: block;
@@ -61,17 +77,37 @@
             color: #666;
         }
     </style>
+    <script>
+        function copiarAlPortapapeles(coordenada) {
+            // Crear un elemento de texto temporal
+            const input = document.createElement('input');
+            input.value = '/vercorfib ' + coordenada;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            alert("Coordenada copiada al portapapeles: " + input.value);
+        }
+    </script>
 </head>
 <body>
     <div class="container">
-        <h1>Mensajes que contienen '{{ cadena }}'</h1>
+        <h1>Coordenadas Encontradas</h1>
         <ul>
-            {% for mensaje in mensajes %}
-                <li>Teléfono: {{ mensaje['Telefono'] }}, Mensaje: {{ mensaje['Mensaje'] }}</li>
-            {% endfor %}
+            <% coordenadas.forEach(({ telefono, latitud, longitud }) => { %>
+                <li>
+                    Teléfono: <%= telefono %>
+                    <ul>
+                        <li>
+                            Coordenada: <%= latitud %>, <%= longitud %>
+                            <button onclick="copiarAlPortapapeles('<%= latitud %>, <%= longitud %>')">Copiar coordenadas</button>
+                        </li>
+                    </ul>
+                </li>
+            <% }); %>
         </ul>
         <a class="back-link" href="/">Volver</a>
     </div>
+    <p class="footer">Aplicación desarrollada por DRAKO</p>
 </body>
-<p class="footer">Aplicación desarrollada por DRAKO</p>
 </html>

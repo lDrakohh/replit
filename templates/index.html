@@ -7,25 +7,28 @@
 </head>
 <body>
     <h1>Bienvenido al analizador de SMS</h1>
+    
+    <!-- Formulario para subir el archivo CSV -->
     <form action="/" method="post" enctype="multipart/form-data">
         <input type="file" name="file" required>
-        <button type="submit">Enviar</button>
+        <button type="submit">Cargar CSV</button> <!-- Botón para enviar el archivo -->
     </form>
 
     <h2>Acciones</h2>
-    <form action="/" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="accion" value="buscar_mensajes">
+    
+    <!-- Formulario para buscar mensajes -->
+    <form action="/buscar_mensajes" method="post">
         <input type="text" name="cadena" placeholder="Buscar palabra..." required>
         <button type="submit">Buscar Mensajes</button>
     </form>
 
-    <form action="/" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="accion" value="ver_palabras">
+    <!-- Formulario para ver palabras más usadas -->
+    <form action="/ver_palabras" method="post">
         <button type="submit">Ver Palabras Más Usadas</button>
     </form>
 
-    <form action="/" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="accion" value="ver_coordenadas">
+    <!-- Formulario para ver ubicaciones -->
+    <form action="/ver_coordenadas" method="post">
         <button type="submit">Ver Ubicaciones Enviadas</button>
     </form>
 </body>

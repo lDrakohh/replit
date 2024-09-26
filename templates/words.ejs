@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palabras Más Usadas</title>
+    <title>Resultados de Búsqueda</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -20,7 +20,7 @@
             text-transform: uppercase;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: auto;
             background: white;
             padding: 20px;
@@ -37,11 +37,6 @@
             border-radius: 5px;
             padding: 15px;
             margin: 10px 0;
-            position: relative;
-            transition: background 0.3s;
-        }
-        li:hover {
-            background: #cce5ff;
         }
         .back-link {
             display: block;
@@ -67,12 +62,14 @@
     <div class="container">
         <h1>Palabras Más Usadas</h1>
         <ul>
-            {% for palabra, conteo in palabras %}
-                <li>{{ palabra }}: {{ conteo }}</li>
-            {% endfor %}
+            <% palabras.forEach(palabra => { %>
+                <li><%= palabra[0] %>: <%= palabra[1] %></li>
+            <% }); %>
         </ul>
         <a class="back-link" href="/">Volver</a>
     </div>
+    <p class="footer">Aplicación desarrollada por DRAKO</p>
 </body>
-<p class="footer">Aplicación desarrollada por DRAKO</p>
 </html>
+
+

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Búsqueda</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #007BFF;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #e9f7ff;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+        li:hover {
+            background: #cce5ff;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mensajes que contienen '{{ cadena }}'</h1>
+        <ul>
+            {% for mensaje in mensajes %}
+                <li>Teléfono: {{ mensaje['Telefono'] }}, Mensaje: {{ mensaje['Mensaje'] }}</li>
+            {% endfor %}
+        </ul>
+        <a class="back-link" href="/">Volver</a>
+    </div>
+</body>
+<p class="footer">Aplicación desarrollada por DRAKO</p>
+</html>

@@ -4,32 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIB - Análisis de SMS</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #007BFF;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #007BFF;
+            margin-top: 30px;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        input[type="file"],
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 400px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            max-width: 200px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-    <h1>Bienvenido al analizador de SMS</h1>
-    
-    <!-- Formulario para subir el archivo CSV -->
-    <form action="/" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <button type="submit">Cargar CSV</button> <!-- Botón para enviar el archivo -->
-    </form>
+    <div class="container">
+        <h1>Bienvenido al Analizador de SMS</h1>
+        
+        <!-- Formulario para subir el archivo CSV -->
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Cargar CSV</button>
+        </form>
 
-    <h2>Acciones</h2>
-    
-    <!-- Formulario para buscar mensajes -->
-    <form action="/buscar_mensajes" method="post">
-        <input type="text" name="cadena" placeholder="Buscar palabra..." required>
-        <button type="submit">Buscar Mensajes</button>
-    </form>
+        <h2>Acciones</h2>
+        
+        <!-- Formulario para buscar mensajes -->
+        <form action="/buscar_mensajes" method="post">
+            <input type="text" name="cadena" placeholder="Buscar palabra..." required>
+            <button type="submit">Buscar Mensajes</button>
+        </form>
 
-    <!-- Formulario para ver palabras más usadas -->
-    <form action="/ver_palabras" method="post">
-        <button type="submit">Ver Palabras Más Usadas</button>
-    </form>
+        <!-- Formulario para ver palabras más usadas -->
+        <form action="/ver_palabras" method="post">
+            <button type="submit">Ver Palabras Más Usadas</button>
+        </form>
 
-    <!-- Formulario para ver ubicaciones -->
-    <form action="/ver_coordenadas" method="post">
-        <button type="submit">Ver Ubicaciones Enviadas</button>
-    </form>
+        <!-- Formulario para ver ubicaciones -->
+        <form action="/ver_coordenadas" method="post">
+            <button type="submit">Ver Ubicaciones Enviadas</button>
+        </form>
+    </div>
+
+    <p class="footer">Aplicación desarrollada por DRAKO</p>
 </body>
 </html>

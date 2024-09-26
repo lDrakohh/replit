@@ -80,14 +80,14 @@ function contarPalabras(datos) {
     return palabrasMasUsadas;
 }
 
-// Función para obtener coordenadas
 function obtenerCoordenadas(datos) {
     const coordenadas = [];
 
     datos.forEach(fila => {
         const mensaje = fila.Mensaje;
         if (mensaje) {
-            const regex = /(-?\d+\.\d+),\s*(-?\d+\.\d+)/g;
+            // Cambia la expresión regular para buscar coordenadas separadas por punto y coma
+            const regex = /(-?\d+\.\d+);?\s*(-?\d+\.\d+)/g;
             let match;
             while ((match = regex.exec(mensaje)) !== null) {
                 coordenadas.push({
@@ -103,10 +103,6 @@ function obtenerCoordenadas(datos) {
     return coordenadas;
 }
 
-// Ruta para el formulario principal
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'templates', 'index.html'));
-});
 
 // Ruta para manejar la carga del archivo
 app.post('/', upload.single('file'), async (req, res) => {

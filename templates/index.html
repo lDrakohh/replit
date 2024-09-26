@@ -72,30 +72,48 @@
         {% if message %}
             <div class="alert">{{ message }}</div>
         {% endif %}
-        <form action="/" method="post" enctype="multipart/form-data">
+        <form id="uploadForm" action="/" method="post" enctype="multipart/form-data">
             <input type="file" name="file" required>
             <button type="submit">Enviar</button>
         </form>
 
         <div class="actions">
             <h2>Acciones</h2>
-            <form action="/" method="post">
-                <input type="text" name="cadena" placeholder="Buscar palabra..." required>
+            <form id="searchForm" action="/" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="accion" value="buscar_mensajes">
+                <input type="text" name="cadena" placeholder="Buscar palabra..." required>
+                <input type="file" name="file" required style="display: none;"> <!-- Oculto -->
                 <button type="submit">Buscar Mensajes</button>
             </form>
 
-            <form action="/" method="post">
+            <form id="wordsForm" action="/" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="accion" value="ver_palabras">
+                <input type="file" name="file" required style="display: none;"> <!-- Oculto -->
                 <button type="submit">Ver Palabras Más Usadas</button>
             </form>
 
-            <form action="/" method="post">
+            <form id="coordinatesForm" action="/" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="accion" value="ver_coordenadas">
+                <input type="file" name="file" required style="display: none;"> <!-- Oculto -->
                 <button type="submit">Ver Ubicaciones Enviadas</button>
             </form>
         </div>
     </div>
     <p class="footer">Herramienta desarrollada por Drako</p>
+    <script>
+        // Copiar el archivo cargado al formulario de acción
+        document.querySelectorAll('.actions form').forEach(form => {
+            form.addEventListener('submit', function() {
+                const fileInput = document.querySelector('#uploadForm input[type="file"]');
+                const file = fileInput.files[0];
+                if (file) {
+                    const hiddenInput = form.querySelector('input[type="file"]');
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    hiddenInput.files = dataTransfer.files; // Copiar el archivo al formulario de acción
+                }
+            });
+        });
+    </script>
 </body>
 </html>

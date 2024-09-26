@@ -9,7 +9,7 @@ const app = express();
 const upload = multer();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static('public'));
+app.use(express.static('templates'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const PALABRAS_IGNORADAS = new Set([/* ... */]);
@@ -40,7 +40,7 @@ function contarPalabras(datos) {
 }
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'templates', 'index.html'));
 });
 
 app.post('/', upload.single('file'), async (req, res) => {

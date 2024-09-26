@@ -3,111 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coordenadas Encontradas</title>
+    <title>Mapa GTA V</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        h1 {
-            color: #007BFF;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 2.5em;
-            text-transform: uppercase;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            background: #e9f7ff;
-            border: 1px solid #007BFF;
-            border-radius: 5px;
-            padding: 15px;
-            margin: 10px 0;
-            position: relative;
-            transition: background 0.3s;
-        }
-        li:hover {
-            background: #cce5ff;
-        }
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            position: absolute;
-            right: 15px;
-            top: 15px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            font-size: 16px;
-            text-decoration: none;
-            color: #007BFF;
-            font-weight: bold;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #666;
-        }
+        #map { height: 100vh; }
     </style>
-    <script>
-        function copiarAlPortapapeles(coordenada) {
-            // Crear un elemento de texto temporal
-            const input = document.createElement('input');
-            input.value = '/vercorfib ' + coordenada;
-            document.body.appendChild(input);
-            input.select();
-            document.execCommand('copy');
-            document.body.removeChild(input);
-            alert("Coordenada copiada al portapapeles: " + input.value);
-        }
-    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Coordenadas Encontradas</h1>
-        <ul>
-            <% coordenadas.forEach(({ telefono, latitud, longitud }) => { %>
-                <li>
-                    Teléfono: <%= telefono %>
-                    <ul>
-                        <li>
-                            Coordenada: <%= latitud %>, <%= longitud %>
-                            <button onclick="copiarAlPortapapeles('<%= latitud %>, <%= longitud %>')">Copiar coordenadas</button>
-                        </li>
-                    </ul>
-                </li>
-            <% }); %>
-        </ul>
-        <a class="back-link" href="/">Volver</a>
-    </div>
-    <p class="footer">Aplicación desarrollada por DRAKO</p>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    // Definición del sistema de coordenadas personalizado
+    const center_x = 117.3;
+    const center_y = 172.8;
+    const scale_x = 0.02072;
+    const scale_y = 0.0205;
+
+    const CUSTOM_CRS = L.extend({}, L.CRS.Simple, {
+        projection: L.Projection.LonLat,
+        scale: function(zoom) {
+            return Math.pow(2, zoom);
+        },
+        zoom: function(sc) {
+            return Math.log(sc) / 0.6931471805599453;
+        },
+        distance: function(pos1, pos2) {
+            var x_difference = pos2.lng - pos1.lng;
+            var y_difference = pos2.lat - pos1.lat;
+            return Math.sqrt(x_difference * x_difference + y_difference * y_difference);
+        },
+        transformation: new L.Transformation(scale_x, center_x, -scale_y, center_y),
+        infinite: true
+    });
+
+    // Definición de la capa del mapa
+    var SateliteStyle = L.tileLayer('mapStyles/styleSatelite/{z}/{x}/{y}.jpg', {
+        minZoom: 0,
+        maxZoom: 8,
+        noWrap: true,
+        continuousWorld: false
+    });
+
+    // Inicializa el mapa
+    var map = L.map('map', {
+        crs: CUSTOM_CRS,
+        minZoom: 1,
+        maxZoom: 5,
+        zoom: 3,
+        maxNativeZoom: 5,
+        center: [0, 0],
+        layers: [SateliteStyle] // Asegúrate de que esta capa está definida antes
+    });
+
+    // Función para agregar coordenadas al mapa
+    function agregarCoordenadas(coordenadas) {
+        coordenadas.forEach(coord => {
+            L.marker([coord.latitud, coord.longitud], { icon: customIcon(1) })
+                .addTo(map)
+                .bindPopup(`Teléfono: ${coord.telefono}<br>Latitud: ${coord.latitud}, Longitud: ${coord.longitud}`);
+        });
+    }
+
+    // Función para crear un icono personalizado
+    function customIcon(icon) {
+        return L.icon({
+            iconUrl: `blips/${icon}.png`,
+            iconSize: [20, 20],
+            iconAnchor: [20, 20], 
+            popupAnchor: [-10, -27]
+        });
+    }
+
+    // Obtener coordenadas del backend
+    fetch('/coordenadas')
+        .then(response => response.json())
+        .then(coordenadas => {
+            agregarCoordenadas(coordenadas);
+        })
+        .catch(error => {
+            console.error('Error al obtener las coordenadas:', error);
+        });
+</script>
+
 </body>
 </html>

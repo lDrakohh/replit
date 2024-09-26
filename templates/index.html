@@ -4,116 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIB - Análisis de SMS</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        h1 {
-            color: #007BFF;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        input[type="file"],
-        input[type="text"],
-        button {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .alert {
-            margin-top: 20px;
-            background-color: #ffdddd;
-            border: 1px solid #f5c2c7;
-            border-radius: 5px;
-            padding: 10px;
-            color: #d8000c;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #666;
-        }
-        .actions {
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Bienvenido al analizador de SMS</h1>
-        {% if message %}
-            <div class="alert">{{ message }}</div>
-        {% endif %}
-        <form id="uploadForm" action="/" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" required>
-            <button type="submit">Enviar</button>
-        </form>
+    <h1>Bienvenido al analizador de SMS</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Enviar</button>
+    </form>
 
-        <div class="actions">
-            <h2>Acciones</h2>
-            <form id="searchForm" action="/" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="accion" value="buscar_mensajes">
-                <input type="text" name="cadena" placeholder="Buscar palabra..." required>
-                <input type="file" name="file" required style="display: none;"> <!-- Oculto -->
-                <button type="submit">Buscar Mensajes</button>
-            </form>
+    <h2>Acciones</h2>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="accion" value="buscar_mensajes">
+        <input type="text" name="cadena" placeholder="Buscar palabra..." required>
+        <button type="submit">Buscar Mensajes</button>
+    </form>
 
-            <form id="wordsForm" action="/" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="accion" value="ver_palabras">
-                <input type="file" name="file" required style="display: none;"> <!-- Oculto -->
-                <button type="submit">Ver Palabras Más Usadas</button>
-            </form>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="accion" value="ver_palabras">
+        <button type="submit">Ver Palabras Más Usadas</button>
+    </form>
 
-            <form id="coordinatesForm" action="/" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="accion" value="ver_coordenadas">
-                <input type="file" name="file" required style="display: none;"> <!-- Oculto -->
-                <button type="submit">Ver Ubicaciones Enviadas</button>
-            </form>
-        </div>
-    </div>
-    <p class="footer">Herramienta desarrollada por Drako</p>
-    <script>
-        // Copiar el archivo cargado al formulario de acción
-        document.querySelectorAll('.actions form').forEach(form => {
-            form.addEventListener('submit', function() {
-                const fileInput = document.querySelector('#uploadForm input[type="file"]');
-                const file = fileInput.files[0];
-                if (file) {
-                    const hiddenInput = form.querySelector('input[type="file"]');
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    hiddenInput.files = dataTransfer.files; // Copiar el archivo al formulario de acción
-                }
-            });
-        });
-    </script>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="accion" value="ver_coordenadas">
+        <button type="submit">Ver Ubicaciones Enviadas</button>
+    </form>
 </body>
 </html>
